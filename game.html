@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Поймай звёздочку</title>
+
+<style>
+body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+    margin: 0;
+}
+
+h1 {
+    color: white;
+    margin-top: 30px;
+}
+
+.info {
+    font-size: 22px;
+    color: white;
+    margin: 20px;
+}
+
+#game {
+    background: white;
+    width: 90%;
+    max-width: 600px;
+    height: 400px;
+    margin: auto;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+#star {
+    position: absolute;
+    font-size: 45px;
+    cursor: pointer;
+    display: none;
+    user-select: none;
+}
+
+button {
+    padding: 15px 30px;
+    background: #ff69b4;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 18px;
+    cursor: pointer;
+    margin: 15px;
+}
+
+button:hover {
+    background: #ff1493;
+}
+</style>
+</head>
+
+<body>
+
+<h1>⭐ Поймай звёздочку! ⭐</h1>
+
+<div class="info">
+    Очки: <span id="score">0</span>
+    <br><br>
+    Время: <span id="time">30</span> сек.
+</div>
+
+<button onclick="startGame()">Начать игру</button>
+
+<div id="game">
+    <div id="star" onclick="catchStar()">⭐</div>
+</div>
+
+<h2 id="message"></h2>
+
+<script>
+let score = 0;
+let time = 30;
+let timer;
+let playing = false;
+
+function startGame() {
+    score = 0;
+    time = 30;
+    playing = true;
+
+    document.getElementById("score").textContent = score;
+    document.getElementById("time").textContent = time;
+    document.getElementById("message").textContent = "";
+
+    clearInterval(timer);
+    moveStar();
+
+    timer = setInterval(function() {
+        time--;
+
+        document.getElementById("time").textContent = time;
+
+        if (time <= 0) {
+            clearInterval(timer);
+            playing = false;
+
+            document.getElementById("star").style.display = "none";
+            document.getElementById("message").textContent =
+                "Игра окончена! Твои очки: " + score;
+        }
+    }, 1000);
+}
+
+function catchStar() {
+    if (!playing) return;
+
+    score++;
+
+    document.getElementById("score").textContent = score;
+
+    moveStar();
+}
+
+function moveStar() {
+    let star = document.getElementById("star");
+    let game = document.getElementById("game");
+
+    let x = Math.random() * (game.clientWidth - 60);
+    let y = Math.random() * (game.clientHeight - 60);
+
+    star.style.left = x + "px";
+    star.style.top = y + "px";
+    star.style.display = "block";
+}
+</script>
+
+</body>
+</html>
